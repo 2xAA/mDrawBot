@@ -554,12 +554,6 @@ class MainUI(QWidget):
         w = self.picWidth
         h = self.picHeight
 
-        print("width, height, picWidth, picHeight")
-        print(self.robot.width)
-        print(self.robot.height)
-        print(w)
-        print(h)
-
         self.picX0 = self.robot.origin[0] + (self.robot.width / 2) - (w / 2)
         self.picY0 = self.robot.origin[1] + (self.robot.height / 2) - (h / 2)
 
