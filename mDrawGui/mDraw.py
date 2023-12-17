@@ -71,6 +71,7 @@ class MainUI(QWidget):
         self.ui.btnHome.clicked.connect(self.robotGoHome)
         self.ui.btnSavePos.clicked.connect(self.savePenPos)
         self.ui.btnHelp.clicked.connect(self.linkToFAQ)
+        self.ui.btnCenter.clicked.connect(self.centerArtwork)
         
         self.ui.btnHFlip.clicked.connect(self.xReflect)
         self.ui.btnVFlip.clicked.connect(self.yReflect)
@@ -131,6 +132,10 @@ class MainUI(QWidget):
         self.refreshThread.start()
 
         self.ui.slideLaserDelay.setValue(25)
+
+        # Set Robot to XY
+        # Useful to me but also stops the UI locking up weirdly?
+        self.ui.robotCombo.setCurrentIndex(4)
         
     def robotPrint(self):
         if not self.robot.printing:
@@ -529,16 +534,36 @@ class MainUI(QWidget):
         if filetype=="svg":
             self.pic = SvgParser.SvgParser(filename,self.scene)
             self.ui.labelPic.setVisible(True)
-            self.picX0 = 300
-            self.picY0 = 200
-            self.picWidth = 150
-            self.picHeight = 150
+            
+            self.picX0 = self.robot.origin[0]
+            self.picWidth = self.robot.width
+            self.picHeight =  self.robot.height
+            self.picY0 = self.robot.origin[1]
+
+            # (w,h) = self.pic.resize((self.picX0, self.picY0, self.picWidth, self.picHeight)) # get rect of target svg
+
+           
             self.updatePic()
         elif filetype=="bmp":
             self.showConverter(filename)
             
     def showConverter(self,bmpPath):
         self.converter = SvgConverter.SvgConverter(ParserGUI.Ui_Form,bmpPath,self.robotSig)
+
+    def centerArtwork(self):
+        w = self.picWidth
+        h = self.picHeight
+
+        print("width, height, picWidth, picHeight")
+        print(self.robot.width)
+        print(self.robot.height)
+        print(w)
+        print(h)
+
+        self.picX0 = self.robot.origin[0] + (self.robot.width / 2) - (w / 2)
+        self.picY0 = self.robot.origin[1] + (self.robot.height / 2) - (h / 2)
+
+        self.updatePic()
 
     def updatePic(self):
         x = self.picX0

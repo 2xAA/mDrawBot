@@ -924,6 +924,12 @@ class Ui_Form(object):
 "")
         self.btnRollAC.setText("")
         self.btnRollAC.setObjectName("btnRollAC")
+
+        # Button to center artwork on robot drawing surface
+        self.btnCenter = QtWidgets.QPushButton(Form)
+        self.btnCenter.setGeometry(QtCore.QRect(20, 80, 60, 40))
+        self.btnCenter.setText("Center art")
+
         self.btnHelp = QtWidgets.QPushButton(Form)
         self.btnHelp.setGeometry(QtCore.QRect(620, 20, 60, 40))
         self.btnHelp.setStyleSheet(" QPushButton {\n"
